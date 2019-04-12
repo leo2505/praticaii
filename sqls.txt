@@ -1,0 +1,150 @@
+CREATE SEQUENCE public.pra_setor_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+	
+	CREATE SEQUENCE public.pra_cargo_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+	
+	
+	CREATE SEQUENCE public.pra_estado_civil_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+	
+	CREATE SEQUENCE public.pra_escolaridade_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+	
+	CREATE SEQUENCE public.pra_pessoas_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE SEQUENCE public.pra_vaga_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE SEQUENCE public.pra_curriculos_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE SEQUENCE public.pra_anexos_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE public.setor
+(
+    idsetor integer NOT NULL DEFAULT nextval('pra_setor_id_seq'::regclass),
+    descricaosetor character varying(250) ,
+    CONSTRAINT pra_setor_pk PRIMARY KEY (idsetor)
+);
+
+CREATE TABLE public.cargos
+(
+    idCargo integer NOT NULL DEFAULT nextval('pra_cargo_id_seq'::regclass),
+    descricaoCargo character varying(250) ,
+    CONSTRAINT pra_cargo_pk PRIMARY KEY (idCargo)
+);
+
+CREATE TABLE public.estadoCivil
+(
+    idestadocivil integer NOT NULL DEFAULT nextval('pra_estado_civil_id_seq'::regclass),
+    descricaoestadocivil character varying(250) ,
+    CONSTRAINT pra_estado_civil_pk PRIMARY KEY (idestadocivil)
+);
+
+CREATE TABLE public.escolaridade
+(
+    idescolaridade integer NOT NULL DEFAULT nextval('pra_escolaridade_id_seq'::regclass),
+    descricaoescolaridade character varying(250) ,
+    CONSTRAINT pra_escolaridade_pk PRIMARY KEY (idescolaridade)
+);
+
+CREATE TABLE public.pessoas
+(
+    idpessoa integer NOT NULL DEFAULT nextval('pra_pessoas_id_seq'::regclass),
+    nomepessoa character varying(250) ,
+	datanascimento date,
+	emailpessoa varchar(100),
+	contatopessoa varchar(100),
+	sexopessoa int,
+	cpfpessoa varchar(50),
+	idestadocivil int,
+    CONSTRAINT pra_pessoas_pk PRIMARY KEY (idpessoa),
+	constraint pra_pessoas_estado_civil_fk foreign key(idestadocivil) references estadocivil(idestadocivil)
+);
+
+CREATE TABLE public.vagas
+(
+    idvaga integer NOT NULL DEFAULT nextval('pra_vaga_id_seq'::regclass),
+    descricaovaga character varying(2000),
+    atribuicoesvaga character varying(2000),   
+    idsetor integer,
+	idcargo integer,
+	idescolaridade integer,
+    CONSTRAINT pra_vagas_pk PRIMARY KEY (idvaga),
+    CONSTRAINT pra_vagas_setor_fk FOREIGN KEY (idsetor)
+        REFERENCES setor (idsetor) ,
+	 CONSTRAINT pra_vagas_cargo_fk FOREIGN KEY (idcargo)
+        REFERENCES cargos (idcargo) ,
+	CONSTRAINT pra_vagas_escolaridade_fk FOREIGN KEY (idescolaridade)
+        REFERENCES escolaridade (idescolaridade) 
+);
+	
+
+CREATE TABLE public.curriculos
+(
+    idcurriculo integer NOT NULL DEFAULT nextval('pra_curriculos_id_seq'::regclass),
+    experienciascurriculo character varying(2000),
+    habilidadescurriculo character varying(2000),   
+    idpessoa integer,
+	idvaga integer,
+    CONSTRAINT pra_curriculos_pk PRIMARY KEY (idcurriculo),
+    CONSTRAINT pra_curriculos_pessoa_fk FOREIGN KEY (idpessoa)
+        REFERENCES pessoas (idpessoa) ,
+	 CONSTRAINT pra_curriculos_vagas_fk FOREIGN KEY (idvaga)
+        REFERENCES vagas (idvaga)
+);
+
+CREATE TABLE public.anexos
+(
+    idanexo integer NOT NULL DEFAULT nextval('pra_anexos_id_seq'::regclass),
+    anexoarquivo bytea,
+    
+    CONSTRAINT pra_anexos_pk PRIMARY KEY (idanexo)
+);
+
+CREATE TABLE public.anexoscurriculos
+(
+    idcurriculo integer NOT NULL,
+    idanexo integer NOT NULL,
+    
+    CONSTRAINT pra_anexos_curriculos_pk PRIMARY KEY (idcurriculo,idanexo),
+	CONSTRAINT pra_anexos_curriculos_curriculo_fk FOREIGN KEY (idcurriculo)
+        REFERENCES curriculos (idcurriculo),
+	CONSTRAINT pra_anexos_curriculos_anexo_fk FOREIGN KEY (idanexo)
+        REFERENCES anexos (idanexo)
+);
