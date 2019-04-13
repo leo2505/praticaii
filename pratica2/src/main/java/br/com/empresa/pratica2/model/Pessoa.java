@@ -25,7 +25,7 @@ public class Pessoa {
     private String cpfpessoa;
 
     @ManyToOne
-    @JoinColumn(name = "estadocivil")
+    @JoinColumn(name = "idestadocivil")
     private EstadoCivil idestadocivil;
 
     public int getIdpessoa() {

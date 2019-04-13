@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,7 +18,13 @@ public class Curriculo {
     private int idcurriculo;
     private String experienciascurriculo;
     private String habilidadescurriculo;
+
+    @ManyToOne
+    @JoinColumn(name = "idpessoa")
     private Pessoa idpessoa;
+
+    @ManyToOne
+    @JoinColumn(name = "idvaga")
     private Vaga idvaga;
 
     public int getIdcurriculo() {

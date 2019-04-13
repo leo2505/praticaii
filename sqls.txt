@@ -129,22 +129,11 @@ CREATE TABLE public.curriculos
         REFERENCES vagas (idvaga)
 );
 
-CREATE TABLE public.anexos
+create TABLE public.anexos
 (
     idanexo integer NOT NULL DEFAULT nextval('pra_anexos_id_seq'::regclass),
     anexoarquivo bytea,
-    
-    CONSTRAINT pra_anexos_pk PRIMARY KEY (idanexo)
-);
-
-CREATE TABLE public.anexoscurriculos
-(
-    idcurriculo integer NOT NULL,
-    idanexo integer NOT NULL,
-    
-    CONSTRAINT pra_anexos_curriculos_pk PRIMARY KEY (idcurriculo,idanexo),
-	CONSTRAINT pra_anexos_curriculos_curriculo_fk FOREIGN KEY (idcurriculo)
-        REFERENCES curriculos (idcurriculo),
-	CONSTRAINT pra_anexos_curriculos_anexo_fk FOREIGN KEY (idanexo)
-        REFERENCES anexos (idanexo)
+	idcurriculo integer,
+    CONSTRAINT pra_anexos_pk PRIMARY KEY (idanexo),
+	constraint pra_anexo_fk foreign key(idcurriculo) references curriculos(idcurriculo)
 );

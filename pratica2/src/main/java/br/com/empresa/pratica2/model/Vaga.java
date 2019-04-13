@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,8 +18,17 @@ public class Vaga {
     private int idvaga;
     private String descricaovaga;
     private String atribuicoesvaga;
+
+    @ManyToOne
+    @JoinColumn(name = "idsetor")
     private Setor idsetor;
+
+    @ManyToOne
+    @JoinColumn(name = "idcargo")
     private Cargo idcargo;
+
+    @ManyToOne
+    @JoinColumn(name = "idescolaridade")
     private Escolaridade idescolaridade;
 
     public int getIdvaga() {
