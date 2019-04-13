@@ -9,15 +9,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "anexos")
+@Table(name = "anexos") 
 public class Anexo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idanexo;
     private int anexoarquivo;
 
-    public int getIdanexo() {
-        return this.idanexo;
+    public int getIdanexo()  {
+         return this.idanexo;
     }
 
     public void setIdanexo(int idanexo) {
